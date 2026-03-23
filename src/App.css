@@ -183,6 +183,12 @@
   }
 }
 
+.game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .board-row {
   display: flex;
   align-items: center;
