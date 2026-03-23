@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -75,7 +76,7 @@ function calculateWinner(squares) {
   return null;
 }
 
-export default function Game() {
+function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
@@ -124,5 +125,31 @@ export default function Game() {
         </div>
       </div>
     </>
+  );
+}
+
+function About() {
+  return (
+    <>
+      <h1>About</h1>
+      <p>React Tutorial to create a Tic-Tac-Toe game.</p>
+    </>
+  );
+}
+
+export default function App() {
+  return( 
+    <BrowserRouter>
+      <nav>
+        <Link to="/" style={{ marginRight: "10px" }}>Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Game />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
