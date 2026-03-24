@@ -17,7 +17,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
+function Board({ xIsNext, squares, onPlay, onRestart }) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -51,6 +51,7 @@ function Board({ xIsNext, squares, onPlay }) {
           )}
         </div>
       )}
+      {winner && <button onClick={onRestart}>Restart?</button>}
     </>
   );
 }
@@ -88,6 +89,11 @@ function Game() {
     setCurrentMove(nextHistory.length - 1);
   }
 
+  function handleRestart() {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
+  }
+
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
@@ -118,7 +124,7 @@ function Game() {
       <h1>Tic-Tac-Toe</h1>
       <div className="game">
         <div className="game-board">
-          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} onRestart={handleRestart}/>
         </div>
         <div className="game-info">
           <ol>{moves}</ol>
