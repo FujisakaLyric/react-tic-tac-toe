@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -78,11 +78,18 @@ function calculateWinner(squares) {
 }
 
 function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
+  const LOCAL_STORAGE_KEY = "game_state";
+  const retrieveGame = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+  const [history, setHistory] = useState(retrieveGame || [Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(history.length - 1);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
-  
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(history));
+  }, [history]);
+
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
