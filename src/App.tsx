@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick }:
+  {
+    value: string | null,
+    onSquareClick: any
+  }
+) {
   return (
     <button
       className="square"
@@ -17,7 +19,14 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay, onRestart }) {
+function Board({ xIsNext, squares, onPlay, onRestart }:
+  {
+    xIsNext: boolean,
+    squares: (string | null)[],
+    onPlay: any,
+    onRestart: any
+  }
+) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -26,7 +35,7 @@ function Board({ xIsNext, squares, onPlay, onRestart }) {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
-  function handleClick(i) {
+  function handleClick(i: number) {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
@@ -44,9 +53,9 @@ function Board({ xIsNext, squares, onPlay, onRestart }) {
   return (  
     <>
       <div className="status">{status}</div>
-      {[...Array(3)].map((x, row) => 
+      {[...Array(3)].map((_:any, row: number) => 
         <div className="board-row">
-          {[...Array(3)].map((x, col) =>
+          {[...Array(3)].map((_: any, col: number) =>
             <Square value={squares[3*row + col]} onSquareClick={() => handleClick(3*row + col)} />
           )}
         </div>
@@ -56,7 +65,7 @@ function Board({ xIsNext, squares, onPlay, onRestart }) {
   );
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares: (string | null)[]) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -79,7 +88,7 @@ function calculateWinner(squares) {
 
 function Game() {
   const LOCAL_STORAGE_KEY = "game_state";
-  const retrieveGame = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+  const retrieveGame = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || 'null');
 
   const [history, setHistory] = useState(retrieveGame || [Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(history.length - 1);
@@ -90,7 +99,7 @@ function Game() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(history));
   }, [history]);
 
-  function handlePlay(nextSquares) {
+  function handlePlay(nextSquares: (string | null)[]) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
@@ -101,11 +110,11 @@ function Game() {
     setCurrentMove(0);
   }
 
-  function jumpTo(nextMove) {
+  function jumpTo(nextMove: number) {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = history.map((_: any, move: number) => {
     let description;
     if (move > 0) {
       description = 'Go to move #' + move;
